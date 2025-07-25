@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static  %}
+{% block title  %}dashboard{% endblock  %}
+{% block content  %}
+<main class="container">
+  <div class=" profile">
+    {% if img %}
+        <img src="{{img.url}}" class="circle profile-img" alt="" >
+    {% else %}
+    <img src="{% static 'icons/user.png' %}" class="circle profile-img" alt="" >
+    {% endif %}
+    <form action="{% url 'people_photo' %}" method="POST" enctype="multipart/form-data">
+     {% csrf_token %}
+      <input type="file" name="photo" onchange="(()=>{this.parentElement.submit()})()" id="profile-photo" hidden>
+      <label for="profile-photo"><i class="material-icons">add</i></label>
+     </form>
+   </div>
+
+   <div class="container">
+      <p>Kigobe Smat Hotel</p>
+       <p>Tel: +257 68 453 235</p>
+       <p>Adress: Kigobe, Av. du Lac, N&deg; 5</p>
+  </div>
+  <div>
+  <p class="title" onclick="(()=>{document.getElementById('postJob').style.display='block'})()"><a class="link">Post a job</a></p>
+  <form action="{% url 'company_post' %}" id="postJob" method="POST" enctype="multipart/form-data" style="display:none">
+   {% csrf_token  %}
+   <input type="text" placeholder="Job title" name="title" required>
+   <input type="file" onchange="(()=>{
+const files = event.target.files;
+if(files.length>0){
+  const file = files[0];
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const img = new Image();
+    img.onload = ()=>{
+      const width = img.width;
+      const height = img.height;
+      if(width/height<1||width/height){
+        console.log(true);
+//        return 0;
+      }
+      console.log(width/height);
+    }
+    img.src = e.target.result;
+  }
+  reader.readAsDataURL(file);
+}
+console.log(files)
+})(event)" name="photo" required></br>
+   <label>Deadline</label>
+   <input type="date" name="deadline" required>
+   <textarea name="description" maxlength="100" placeholder="Descripton" required></textarea>
+   <button type="submit" class="btn-small">ADD</button>
+  </form>
+ </div>
+ <div class="row">
+   <p class="title">Ongoing posts</p>
+   {% if candidates %}
+   <div class="post-details" id="post{{post.id}}" style="">
+     <p><a class="link back-to-post">Back to posts</a></p>
+     <table class="striped">
+     <theader>
+       <tr>
+         <th> FirstName</th>
+         <th>LastName</th>
+         <th>Date</th>
+         <th>CV</th>
+     </tr>
+    </theader>
+     <tbody class="">
+<!--for loop-->
+     {% for candidate in candidates %}
+       <tr>
+        <td>{{candidate.user.first_name}}</td>
+        <td>{{candidate.user.last_name}}</td>
+        <td>{{candidate.date}}</td>
+        <td><a href="{% url  'view_profile' candidate.user.id  %}">view</a></td><!--url pointing to the person's profile-->
+     <tr>  
+
+     {% endfor %}
+<!--end loop then remove these comments-->
+
+    </tbody>
+   </table>
+   </div>
+   {% endif %}
+   {% for post in posts %}
+   <div class="col s6 m3 post">
+    <div class="post-div">
+      <img src="{{post.photo.url}}" alt="Post title" width="120px">
+      <p>{{post.descriptions}}</p>
+      <p class="center-align"><a id="post{{post.id}}" href="{% url 'view_applicante' post.id %}"  class="link post-link">{{post.title}}</a></p>
+    </div>
+   </div>
+   {% endfor %}
+ </div>
+</main>
+{% endblock  %}

@@ -1,0 +1,48 @@
+/* ** css**  */
+.card-image,img{
+  width: 100%;
+  height: 150px;
+  object-fit:contain;
+  border-radius:5px;
+}
+
+.row .col {
+  padding:0 0.4rem !important;
+}
+
+.home .profile-img{
+  width:50px;
+  height:50px;
+}
+
+.deadline{
+  font-size:12px;
+}
+button {
+  border: none;
+  border-radius: 5px;
+  padding: 8px;
+  background: #dfdfdf;
+}
+input{
+  border: solid 0.1px #c4bcbc !important;
+  border-radius: 5px !important;
+}
+input:focus{
+  box-shadow:none !important;
+  border-bottom:solid 0.1px #c4bcbc !important;
+}
+input:focus{
+  color:#248888;
+}
+.form{
+  border:#c5c5c5 0.2px solid;
+  border-radius:5px;
+  padding:10px;
+}
+.add-photo {
+    position: relative !important;
+    bottom: 20px !important;
+    left: 40px;
+    padding:0 !important;
+}

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<main>
+  <div class="container ">
+
+     <div class=" profile">
+        {% if img %}
+       <img src="{{img.url}}" class="circle profile-img" alt="" >
+        {% else %}
+       <img src="{% static 'icons/user.png' %}" class="circle profile-img" alt="" >
+        {% endif %}
+        {% if view_profile %}
+        {% else %}
+        <form action="{% url 'people_photo' %}" method="POST" enctype="multipart/form-data">
+         {% csrf_token %}
+         <input type="file" name="photo" onchange="(()=>{this.parentElement.submit()})()" id="profile-photo" hidden>
+        <label for="profile-photo"><a class="btn halfway-fab waves-effect waves-light cyan" style="width: 24px;
+    border-radius: 50%;
+    height: 24px;
+    align-items: center;
+    padding: 0;
+    position: relative;
+    top: -16px;
+    left: 33px;
+"><i class="material-icons add-photo" style="position: relative;
+    bottom: 5px !important;
+    left: 0px;
+    margin: auto !important;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+">add</i></a></label>	
+       </form>
+     </div>
+     {% endif %}
+     <div class="">
+         <p>First name: {{user.first_name}}</p>
+         <p>Last name: {{user.last_name}}</p>
+         <p>Phone number: {{user.name}}</p>
+         <p>Adress: {{user.address}}</p>
+     </div>  
+         {% if view_profile %}
+         {% else %}
+        <p class='title' onclick="(()=>{document.getElementById('addDoc').style.display='block'})()"><a class="link">Add document</a></p>
+     <form action="{% url 'profile' %}" id="addDoc" method="POST" enctype="multipart/form-data"  class="row form" style="display:none">
+        {% csrf_token %}
+            <input type="text" name="title" placeholder="Job title" required>
+            <p><label for="doc" class="choose-file">Choose file</label></p>
+            <input type="file" id="doc" name="document" hidden>
+            <p id="docPlace" style="display:none">
+            <p><button type="submit">Save</button></p>
+    </form>
+    <div>
+      <p class="title">Seek for job</p>
+      <form action="{% url 'people_post' %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="Title" required>
+        <textarea name="description" maxlength="100" placeholder="Short description"></textarea>
+        <p><button type="submit">Post</button></p>
+      </form>
+    </div>
+     {% endif %}
+    {% if view_profile %}
+    <h5 class="center">Candidate documents</h5>
+    <div class="row">
+      {% for p in profile %}
+      <div class="col s6 m3" >
+      <div class="post-div">
+        <p class="center-align">{{p.title}}</p>
+        {% if p.document %}
+        <p class="center-align"><a href="{{p.document.url}}">View</a></p>
+        {% endif %}
+       </div>
+     </div>  
+     {% endfor %}
+    {% else %}
+    <h5 class="center">My documents</h5>
+    <div class="row">
+      {% for p in profile %}
+      <div class="col s6 m3" >
+      <div class="post-div">
+        <p class="center-align">{{p.title}}</p>
+        <p class="center-align"><a href="{{p.document.url}}">View</a></p>
+       </div>
+     </div>  
+     {% endfor %}
+
+    {% endif %}
+    </div> 
+  </div>
+</main>
+{% endblock %}

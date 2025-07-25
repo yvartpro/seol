@@ -1,0 +1,56 @@
+from django.db import models
+from django.contrib.auth.models import AbstractUser
+'''from django.utils.timezone import now
+from datetime import timedelta'''
+
+# Create your models here
+class User(AbstractUser):
+      email = models.EmailField(max_length=30,unique=True)
+      address = models.CharField(max_length=15,null=True)
+      phone = models.IntegerField(null=True)
+      type = models.CharField(max_length=20,null=True)
+      USERNAME_FIELD='email'
+      REQUIRED_FIELDS=[]
+      def __str__(self):
+          return self.email
+class Company_post(models.Model):
+      user = models.ForeignKey(User,on_delete=models.CASCADE)
+      title = models.CharField(max_length=10,null=True)
+      photo = models.FileField(upload_to='company_post')
+      deadline = models.CharField(max_length=10,null=True)
+      description = models.TextField()
+      '''created_at = models.DateTimeField(auto_now_add=True)
+      expiry_date = models.DateTimeField(default=lambda: now() + timedelta(minute=5))
+      def is_expired(self):
+          return now() > self.expiry_date'''
+      def __str_(self):
+          return f'self.user.email'
+class People_post(models.Model):
+      user = models.ForeignKey(User,on_delete=models.CASCADE)
+      title = models.CharField(max_length=20,null=True)
+      description = models.TextField()
+      def __str_(self):
+          return self.description
+class Company_profile(models.Model):
+      user = models.ForeignKey(User,on_delete=models.CASCADE)
+      photo = models.ImageField()
+      sector = models.CharField(max_length=20)
+      def __str_(self):
+          return self.photo
+class People_profile(models.Model):
+      user = models.ForeignKey(User,on_delete=models.CASCADE)
+      title = models.TextField(null=True)
+      document = models.FileField(upload_to='user_document',null=True)
+      def __str__(self):
+          return f'{self.user.first_name}-{self.user.last_name}'
+
+class Apply_job(models.Model):
+      user = models.ForeignKey(User,on_delete=models.CASCADE)
+      post = models.ForeignKey(Company_post,on_delete=models.CASCADE)
+      date = models.DateTimeField(auto_now_add=True)
+      def __str__(self):
+          return f'{self.user.email}'
+
+class Profile(models.Model):
+      user = models.OneToOneField(User,on_delete=models.CASCADE,null=True)
+      photo = models.FileField(null=True)

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<main>
+  <div class="container ">
+     <div class=" profile">
+       <img src="" alt="" >
+       <form action="" method="POST" enctype="multipart/form-data">
+         {% csrf_token %}
+         <input type="file" name="photo" onchange="(()=>{
+//           this.parentElement.submit;
+           console.log(this.parentElement)
+         })()" id="profile-photo" hidden>
+         <label for="profile-photo"><i class="material-icons">add</i></label>
+       </form>
+     </div>
+     <div class="container">
+         <p>Kigobe Smat Hotel</p>
+         <p>Tel: +257 68 453 235</p>
+         <p>Adress: Kigobe, Av. du Lac, N&deg; 5</p>
+     </div>
+     <div class="row">
+       <div class="col s12 m6">
+         <div class="card">
+           <div class="image">
+             <img src="" alt="KSMHotel">
+           </div>
+           <div class="card-content">
+             <p>We are recruiting software professionals with minimum degree Masters in Software engineering or related fields. </p>
+           </div>
+           <div class="">
+             <span>Deadline: Dec 04, 2024</span>
+           </div>
+           <a href="{% url 'dashboard'%}">View in dashboard</a>
+         </div>
+       </div>
+     </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

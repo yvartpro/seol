@@ -1,0 +1,55 @@
+  {% extends 'base.html' %}
+{% load static %}
+{% block title %}{% endblock %}
+{% block content %}
+  <main class="container home top">
+    <div class="row center">
+     <div class="col s12 m4 welcome">
+     <h4> Find your Job & make sure goal </h4>
+     <p> Your dream job waiting for you </p>
+    </div>
+    <div class="col s12 m8  firstname=request.POST.get('fistname')">
+     <img src="{% static 'icons/ruto.jpg'  %}" width="100%" style="width:100%;height:auto" class="img"/>
+    </div>
+    </div>
+    <div class="row">
+      <p class="title">Trending jobs</p>
+      {% for post in posts %}
+      <div class="col s6 m4 l3">
+        <div class="card">
+          <div class="align-content">
+            <img src="{% static 'icons/user.png' %}" class="circle profile-img" alt="" class="">
+            <p style="margin:0 auto;"><span>{{post.user.first_name}}.</span></p>
+          </div>
+          <div class="card-image">
+            <img src="{{post.photo.url}}" class="materialboxed" alt="Lumitel">
+          </div>
+          <div class="">
+            <span class="deadline">Deadline: {{post.deadline}}</span>
+          </div>
+          <div class="">           
+           {% if user.is_authenticated %}
+           <center><a href="{%  url 'apply_job' post.id %}">Apply Now</a></center>
+           {% else %}
+           <center><a href="{% url 'login' %}">login to apply</a></center>
+           {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="row">
+      <p class="title"> Jobs seeker</p>
+      {% for seeker in seekers %}
+      <div class="col s6 m3">
+         <div class="post-div">
+         <p class=" center title">{{seekr.title}}</p>
+         <p class="center-align">{{seeker.description}}<p>
+         <p class="center-align"><a href="{% url 'view_profile' seeker.user.id %}">View CV</a></p>    
+       </div>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+
+{% endblock %}
